@@ -46,7 +46,7 @@ plug-in.
 
 %prep
 %setup -n gst-libav-%{version} 
-%patch -p1
+%patch0 -p1
 
 
 %build
@@ -68,7 +68,7 @@ export CFLAGS="$RPM_OPT_FLAGS -Wno-deprecated-declarations"
 %install
 %make_install V=1
 
-rm $RPM_BUILD_ROOT%{_libdir}/gstreamer-1.0/libgst*.la
+# rm $RPM_BUILD_ROOT%%{_libdir}/gstreamer-1.0/libgst*.la
 
 
 %files
