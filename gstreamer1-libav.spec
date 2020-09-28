@@ -61,8 +61,6 @@ export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
-  
-%build
 meson  \ 
    --libdir=lib64 --prefix=/usr \
    --buildtype=plain \ 
