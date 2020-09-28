@@ -1,5 +1,5 @@
 Name:           gstreamer1-libav
-Version:        1.17.90
+Version:        1.18.0
 Release:        1%{?dist}
 Summary:        GStreamer 1.0 libav-based plug-ins
 Group:          Applications/Multimedia
@@ -16,7 +16,7 @@ BuildRequires:  bzip2-dev
 BuildRequires:  zlib-dev
 BuildRequires:  ffmpeg-dev
 BuildRequires:  yasm
-
+BuildRequires:  meson
 
 
 %description
@@ -46,13 +46,9 @@ plug-in.
 
 %prep
 %setup -n gst-libav-%{version} 
-#%%patch0 -p1
 
 
 %build
-export http_proxy=http://127.0.0.1:9/
-export https_proxy=http://127.0.0.1:9/
-export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
 export SOURCE_DATE_EPOCH=1572633870
 export GCC_IGNORE_WERROR=1
@@ -63,33 +59,33 @@ export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 -Wno-deprecated-declaration
 export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
 export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
-%configure --disable-dependency-tracking \
-  --disable-static \
-  --with-package-name="gst-libav 1.0 ClearFraction" \
-  --with-package-origin="https://github.com/clearfraction/" \
-  --with-system-libav \
-  --disable-fatal-warnings \
-  --enable-silent-rules 
-
-  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
   
-%make_build V=0
+%build
+meson  \ 
+   --libdir=lib64 --prefix=/usr \
+   --buildtype=plain \ 
+   -D package-name="gst-libav clearfraction" \
+   -D package-origin="https://github.com/clearfraction" \
+   -D doc=disabled \
+   builddir
 
-
+ninja -v -C builddir
+    
+    
 %install
-%make_install V=1
+DESTDIR=%{buildroot} ninja -C builddir install
 
-# rm $RPM_BUILD_ROOT%%{_libdir}/gstreamer-1.0/libgst*.la
 
 
 %files
-%doc AUTHORS ChangeLog NEWS README TODO
-%license COPYING.LIB
 %{_libdir}/gstreamer-1.0/libgstlibav.so
 
 %files dev-docs
 # Take the dir and everything below it for proper dir ownership
+%doc AUTHORS ChangeLog NEWS README TODO
+%license COPYING.LIB
 %doc %{_datadir}/gtk-doc
 
 
