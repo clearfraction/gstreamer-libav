@@ -7,13 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Download artifact
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          repo: clearfraction/mass-rebuild
-          workflow: mass-rebuild.yml
-          check_artifacts: true
+      - uses: actions/checkout@master
       - name: Building a package
         run: |
           curl -LO https://raw.githubusercontent.com/clearfraction/tools/master/build-core.sh && chmod +x build-core.sh
