@@ -11,7 +11,7 @@ BuildRequires:  gst-plugins-base-dev
 BuildRequires:  orc-dev
 BuildRequires:  bzip2-dev
 BuildRequires:  zlib-dev
-BuildRequires:  ffmpeg-dev
+BuildRequires:  not-ffmpeg-dev
 BuildRequires:  yasm
 BuildRequires:  meson
 
