@@ -1,5 +1,5 @@
 Name:           gstreamer1-libav
-Version:        1.22.11
+Version:        1.24.2
 Release:        1%{?dist}
 Summary:        GStreamer 1.0 libav-based plug-ins
 Group:          Applications/Multimedia
